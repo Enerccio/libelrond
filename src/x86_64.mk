@@ -1,0 +1,2 @@
+ARCH_CFLAGS   :=
+ARCH_CPPFLAGS :=-D__X86_64__

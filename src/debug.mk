@@ -1,0 +1,2 @@
+MODE_CFLAGS   :=-g -O0
+MODE_CPPFLAGS :=
