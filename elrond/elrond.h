@@ -30,24 +30,37 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#define ELROND_MODE_COPYBYTES   (1)
-#define ELROND_MODE_INFORM      (2)
-
 #define ELROND_NO_ERROR 		  (0)
 #define ELROND_UNKNOWN_MODE		  (1)
 #define ELROND_LOADER_FNC_NOTPROV (2)
 #define ELROND_NO_DATA			  (3)
+#define ELROND_MALOC_FAILURE	  (4)
 
+/** Called to inform kernel that loader needs those virtual addresses available (paged in)*/
 typedef void (*address_allocator)(void* state, void* address, size_t n);
+/** Called to inform kernel that loader wants data from file offset f into target address */
 typedef void (*memcpy_fromfile)	 (void* state, void* target_address, size_t foffset, size_t n);
+/** Called to inform kernel that loader wants data from source address to target_address */
 typedef void (*memcpy_general)   (void* state, void* target_address, void* source_address, size_t n);
+/** Returns size_t bytes into pointer buffer, returning 0 on success */
 typedef int  (*get_elf_data)	 (void* state, char** buffer, size_t byterq);
+/** Informing that kernel can free data requested before */
 typedef void (*free_elf_data)    (void* state, char* buffer);
+/** Requesting kernel to allocate that many bytes */
 typedef void*(*malloc_general)   (void* state, size_t n);
+/** Requesting kernel to realoc that pointer */
 typedef void*(*realloc_general)  (void* state, void* address, size_t newsize);
+/** Requesting kernel to deallocate that many bytes */
 typedef void*(*free_general)     (void* state, void* address);
+/** Requesting to perform memset on this address */
 typedef void*(*memset_general)   (void* address, uint8_t value, size_t n);
 
+/**
+ * elf_loader_t type
+ *
+ * Elf loader. libelrond uses this loader to load elf into memory. Kernel should supply these functions.
+ * Kernel can use elf_loader->state pointer/data for any needed inner states.
+ */
 typedef struct elf_loader {
 	uint32_t		  loader_mode;
 
@@ -65,5 +78,12 @@ typedef struct elf_loader {
 } elf_loader_t;
 
 #ifdef __X86_64__
+/**
+ * Loads elf into memory based on settings in loader
+ *
+ * * loader - elf_loader_t instance
+ * * returns 0 on success, non zero on failure
+ *    error is then located in loader->error_code
+ */
 int load_elf_64(elf_loader_t* loader);
 #endif

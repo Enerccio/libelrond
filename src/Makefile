@@ -1,5 +1,6 @@
 PREFIX?=
 LIBDIR?=$(PREFIX)/lib
+INCDIR?=$(PREFIX)/include
 
 MODE ?=debug
 ARCH ?=x86_64
@@ -31,4 +32,5 @@ clean:
 	$(CC) -c $(CFLAGS) $(CPPFLAGS) -I"../" $< -o $@
 	
 libelrond.a: $(OBJ)
+	cp ../elrond $(INCDIR) -rfv
 	$(AR) -rcs $(LIBDIR)/$@ $(OBJ)

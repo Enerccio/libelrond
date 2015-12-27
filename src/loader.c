@@ -27,6 +27,8 @@
 
 #include <elrond/elrond.h>
 
+#include "elf_def.h"
+
 #ifdef __X86_64__
 
 int load_elf_64(elf_loader_t* loader){
