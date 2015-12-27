@@ -26,9 +26,6 @@ elrond: libelrond.a
 clean:
 	-rm -f $(OBJ)
 	-rm -f $(wildcard *.d)
-ifeq ($(MODE),user)
-	-rm -f "$(ADAPTER)"
-endif
 
 %.o : %.c
 	$(CC) -c $(CFLAGS) $(CPPFLAGS) -I"../" $< -MM -MF $(patsubst %.o,%.d,$@)
