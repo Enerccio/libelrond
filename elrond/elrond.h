@@ -30,12 +30,13 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#define ELROND_NO_ERROR 		    (0)
-#define ELROND_UNKNOWN_MODE		    (1)
-#define ELROND_LOADER_FNC_NOTPROV   (2)
-#define ELROND_NO_DATA			    (3)
-#define ELROND_MALOC_FAILURE	    (4)
-#define ELROND_UNDEFINED_ELF_FORMAT (65535)
+#define ELROND_NO_ERROR 		      (0)
+#define ELROND_UNKNOWN_MODE		      (1)
+#define ELROND_LOADER_FNC_NOTPROV     (2)
+#define ELROND_NO_DATA			      (3)
+#define ELROND_MALOC_FAILURE	      (4)
+#define ELROND_UNDEFINED_ELF_FORMAT   (65534)
+#define ELROND_UNSUPPORTED_ELF_FORMAT (65535)
 
 /** Called to inform kernel that loader needs those virtual addresses available (paged in)*/
 typedef void (*address_allocator)(void* state, void* address, size_t n);
@@ -45,8 +46,6 @@ typedef void (*memcpy_fromfile)	 (void* state, void* target_address, size_t foff
 typedef void (*memcpy_general)   (void* state, void* target_address, void* source_address, size_t n);
 /** Returns size_t bytes into pointer buffer, returning 0 on success */
 typedef int  (*get_elf_data)	 (void* state, char** buffer, size_t byterq, size_t offset);
-/** Informing that kernel can free data requested before */
-typedef void (*free_elf_data)    (void* state, char* buffer);
 /** Requesting kernel to allocate that many bytes */
 typedef void*(*malloc_general)   (void* state, size_t n);
 /** Requesting kernel to realoc that pointer */
@@ -67,7 +66,6 @@ typedef struct elf_loader {
 	memcpy_fromfile	  mc_ff;
 	memcpy_general    mc_gen;
 	get_elf_data	  get_elf;
-	free_elf_data	  free_elf;
 	malloc_general	  malloc;
 	realloc_general	  realloc;
 	free_general	  free;
