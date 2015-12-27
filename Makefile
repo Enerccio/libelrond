@@ -1,4 +1,4 @@
-.PHONY all elrond clean
+.PHONY: all elrond clean
 
 all: elrond
 

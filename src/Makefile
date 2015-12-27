@@ -7,19 +7,18 @@ ARCH ?=x86_64
 include  $(MODE).mk
 include  $(ARCH).mk
 
-CFLAGS:= -ffreestanding -std=c99 -Wall -Wextra \
-	-fmessage-length=0 -nostdlib \
+CFLAGS:= -ffreestanding -std=c99 -Wall -Wextra -fmessage-length=0 \
 	 $(MODE_CFLAGS) $(ARCH_CFLAGS) $(CFLAGS_FOR_TARGET) 
 CPPFLAGS = $(MODE_CPPFLAGS) $(ARCH_CPPFLAGS) $(CPPFLAGS_FOR_TARGET)
 
 SRC := $(wildcard *.c)
 OBJ := $(SRC:.c=.o)
-DEP    := $(SRC:.c=.d)
+DEP := $(SRC:.c=.d)
 -include $(DEP)
 
 .PHONY: all clean elrond
 
-all: libelrond.a
+all: elrond
 
 elrond: libelrond.a
 
