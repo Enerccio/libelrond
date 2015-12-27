@@ -62,8 +62,6 @@ typedef void*(*memset_general)   (void* address, uint8_t value, size_t n);
  * Kernel can use elf_loader->state pointer/data for any needed inner states.
  */
 typedef struct elf_loader {
-	uint32_t		  loader_mode;
-
 	address_allocator ea;
 	memcpy_fromfile	  mc_ff;
 	memcpy_general    mc_gen;
